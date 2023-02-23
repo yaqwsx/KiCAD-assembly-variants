@@ -39,7 +39,7 @@ setuptools.setup(
     include_package_data=True,
     entry_points = {
         "console_scripts": [
-            "kiAssemblyVariant=kiAssemblyVariant.ui:cli",
+            "kiAsm=kiAssemblyVariant.ui:cli",
         ],
     }
 )

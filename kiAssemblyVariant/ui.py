@@ -3,18 +3,21 @@ import shutil
 from pathlib import Path
 from . import __version__
 
+def copyKiCADProject(srcPath: Path, dstPath: Path) -> None:
+    for f in srcPath.iterdir():
+        if f.suffix.startswith(".kicad_") or f.name in ["fp-lib-table", "sym-lib-table"]:
+            shutil.copy2(f, dstPath)
+
 @click.command()
 @click.argument("projectdir", type=click.Path(dir_okay=True, file_okay=False, exists=True))
 @click.option("-p", "--prefix", type=str,
     help="Assembly variant prefix")
-@click.option("-f", "--field", type=str, multiple=True,
-    help="Fields to switch")
-def switch(projectdir, prefix, field):
+def switch(projectdir, prefix):
     """
     Change assembly variant of a project in place
     """
     from .augment import augmentProject
-    augmentProject(Path(projectdir), prefix, field)
+    augmentProject(Path(projectdir), prefix)
 
 
 @click.command()
@@ -22,9 +25,7 @@ def switch(projectdir, prefix, field):
 @click.argument("destdir", type=click.Path(dir_okay=True, file_okay=False))
 @click.option("-p", "--prefix", type=str, multiple=True,
     help="Assembly variant prefix")
-@click.option("-f", "--field", type=str, multiple=True,
-    help="Fields to switch")
-def export(projectdir, destdir, prefix, field):
+def export(projectdir, destdir, prefix):
     """
     Export project in multiple assembly variants into a dedicated directory
     """
@@ -32,8 +33,8 @@ def export(projectdir, destdir, prefix, field):
     for p in prefix:
         dest = Path(destdir) / p
         dest.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(projectdir, dest, dirs_exist_ok=True)
-        augmentProject(dest, p, field)
+        copyKiCADProject(Path(projectdir), dest)
+        augmentProject(dest, p)
 
 
 @click.group()
