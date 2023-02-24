@@ -23,7 +23,6 @@ original one.
 
 The following special attributes names map to KiCAD built-ins:
 
-- Reference
 - Value
 - in_bom (yes/no)
 - on_board (yes/no)
@@ -33,7 +32,7 @@ The following special attributes names map to KiCAD built-ins:
 
 If you want to switch variant in place, just invoke:
 ```
-$ kiAsm switch --field Value --field Comment --prefix variant1 path/to/project/directory
+$ kiAsm switch --prefix variant1 path/to/project/directory
 ```
 
 You can specify multiple fields to change and only single prefix. Instead of
@@ -42,7 +41,7 @@ You can specify multiple fields to change and only single prefix. Instead of
 If you want to export multiple variants, you can use the `export` command:
 
 ```
-$ $ kiAsm export --field Value --field Comment --prefix variant1 --prefix variant2 path/to/project/directory path/to/output/directory
+$ $ kiAsm export --prefix variant1 --prefix variant2 path/to/project/directory path/to/output/directory
 ```
 
 This command will create directories `variant1` and `variant2` in the output
