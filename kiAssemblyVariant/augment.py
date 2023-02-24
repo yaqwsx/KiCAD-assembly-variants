@@ -7,7 +7,7 @@ from pcbnewTransition import pcbnew
 class AugmentationError(RuntimeError):
     pass
 
-def augmentProject(project: Path, variantPrefix: str) -> None:
+def augmentProject(project: Path, variantPrefix: str, includeBoard: bool = True) -> None:
     projectFile = locateProject(project)
     for f in project.iterdir():
         if f.suffix == ".kicad_sch":
@@ -19,9 +19,10 @@ def augmentProject(project: Path, variantPrefix: str) -> None:
     if not brdFile.exists():
         raise AugmentationError(f"No board for project {projectFile}")
     symbols = extractComponents(schFile)
-    board = pcbnew.LoadBoard(str(brdFile))
-    updateBoard(board, symbols)
-    board.Save(board.GetFileName())
+    if includeBoard:
+        board = pcbnew.LoadBoard(str(brdFile))
+        updateBoard(board, symbols)
+        board.Save(board.GetFileName())
 
 
 def locateProject(project: Path) -> Path:
