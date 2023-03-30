@@ -17,7 +17,7 @@ def switch(projectdir, prefix):
     Change assembly variant of a project in place
     """
     from .augment import augmentProject
-    augmentProject(Path(projectdir), "default", includeBoard=False)
+    augmentProject(Path(projectdir), "def", includeBoard=False)
     augmentProject(Path(projectdir), prefix)
 
 
@@ -35,7 +35,7 @@ def export(projectdir, destdir, prefix):
         dest = Path(destdir) / p
         dest.mkdir(parents=True, exist_ok=True)
         copyKiCADProject(Path(projectdir), dest)
-        augmentProject(dest, "default", includeBoard=False)
+        augmentProject(dest, "def", includeBoard=False)
         augmentProject(dest, p)
 
 
